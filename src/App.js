@@ -7,12 +7,18 @@ const initialItems = [
 ];
 
 export default function App() {
+  // For adding items
+  const [items, setItem] = useState([]);
+  function handleAddItems(item) {
+    setItem((items) => [...items, item]);
+  }
+
   return (
     <>
       <div className="app">
         <Logo />
-        <Form />
-        <PackingList />
+        <Form onAddItems={handleAddItems} />
+        <PackingList items={items} />
         <Stats />
       </div>
     </>
@@ -22,7 +28,7 @@ function Logo() {
   return <h1>🏝 Far Away💼</h1>;
 }
 
-function Form() {
+function Form({ onAddItems }) {
   // For accessing input field (description)
   const [description, setDescription] = useState("");
   function handleDescription(e) {
@@ -43,6 +49,7 @@ function Form() {
     console.log(newItem);
     // initialItems.push(newItem);
     // console.log(initialItems);
+    onAddItems(newItem);
     setDescription("");
     setQuantity(1);
   };
@@ -68,11 +75,11 @@ function Form() {
   );
 }
 
-function PackingList() {
+function PackingList({ items }) {
   return (
     <div className="list">
       <ul>
-        {initialItems.map((item) => (
+        {items.map((item) => (
           <Item item={item} key={item.id} />
         ))}
       </ul>
