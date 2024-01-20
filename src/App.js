@@ -2,23 +2,33 @@ import { useState } from "react";
 
 export default function App() {
   // For adding items
-  const [items, setItem] = useState([]);
+  const [items, setItems] = useState([]);
   function handleAddItems(item) {
-    setItem((items) => [...items, item]);
+    setItems((items) => [...items, item]);
   }
 
   // For deleting items
   function handleDeleteItem(id) {
-    setItem((item) => items.filter((item) => item.id !== id));
+    setItems((item) => items.filter((item) => item.id !== id));
   }
 
   // For packing item
   function handleToggleCheck(id) {
-    setItem((item) =>
+    setItems((item) =>
       items.map((item) =>
         item.id === id ? { ...item, packed: !item.packed } : item
       )
     );
+  }
+
+  // For Clearing all list items
+  function handleClearList() {
+    if (items.length) {
+      const confirm = window.confirm(
+        "Are you sure you want to delete all items"
+      );
+      if (confirm) setItems([]);
+    } else alert("Nothing to clear in the list!");
   }
 
   return (
@@ -30,6 +40,7 @@ export default function App() {
           items={items}
           onDeleteItem={handleDeleteItem}
           onToggleCheck={handleToggleCheck}
+          onClearList={handleClearList}
         />
         <Stats items={items} />
       </div>
@@ -85,7 +96,7 @@ function Form({ onAddItems }) {
   );
 }
 
-function PackingList({ items, onDeleteItem, onToggleCheck }) {
+function PackingList({ items, onDeleteItem, onToggleCheck, onClearList }) {
   const [sortBy, setSortBy] = useState("input");
   function handleSortBy(e) {
     setSortBy(e.target.value);
@@ -129,6 +140,7 @@ function PackingList({ items, onDeleteItem, onToggleCheck }) {
           <option value="description">Sort by description</option>
           <option value="packed">Sort by packed status</option>
         </select>
+        <button onClick={onClearList}>Clear List</button>
       </div>
     </div>
   );
