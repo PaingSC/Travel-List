@@ -29,7 +29,7 @@ export default function App() {
   function handleClearList() {
     if (items.length) {
       const confirm = window.confirm(
-        "Are you sure you want to delete all items"
+        "Are you sure you want to delete all items?"
       );
       if (confirm) setItems([]);
     } else alert("Nothing to clear in the list!");
